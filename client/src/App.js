@@ -6,12 +6,10 @@ class App extends Component {
   // initialize our state
   state = {
     data: [],
-    id: 0,
     message: null,
-    intervalIsSet: false,
     idToDelete: null,
     idToUpdate: null,
-    objectToUpdate: null,
+    updateToApply: null
   };
 
   componentDidMount() {
@@ -25,10 +23,11 @@ class App extends Component {
   };
 
   putDataToDB = (message) => {
-    let currentIds = this.state.data.map((data) => data.id);
-    let idToBeAdded = 0;
-    while (currentIds.includes(idToBeAdded)) {
-      ++idToBeAdded;
+    const data = this.state.data;
+    let idToBeAdded = 1;
+    if (data.length) {
+      const lastId = data[data.length - 1].id;
+      idToBeAdded = lastId + 1;
     }
 
     axios.post('http://localhost:3001/api/putData', {
@@ -75,8 +74,7 @@ class App extends Component {
             type="text"
             onChange={(e) => this.setState({ message: e.target.value })}
             placeholder="add something in the database"
-            style={{ width: '200px' }}
-          />
+            style={{ width: '200px' }} />
           <button onClick={() => this.putDataToDB(this.state.message)}>
             ADD
           </button>
@@ -86,8 +84,7 @@ class App extends Component {
             type="text"
             style={{ width: '200px' }}
             onChange={(e) => this.setState({ idToDelete: e.target.value })}
-            placeholder="put id of item to delete here"
-          />
+            placeholder="put id of item to delete here" />
           <button onClick={() => this.deleteFromDB(this.state.idToDelete)}>
             DELETE
           </button>
@@ -97,19 +94,14 @@ class App extends Component {
             type="text"
             style={{ width: '200px' }}
             onChange={(e) => this.setState({ idToUpdate: e.target.value })}
-            placeholder="id of item to update here"
-          />
+            placeholder="id of item to update here" />
           <input
             type="text"
             style={{ width: '200px' }}
             onChange={(e) => this.setState({ updateToApply: e.target.value })}
-            placeholder="put new value of the item here"
-          />
+            placeholder="put new value of the item here" />
           <button
-            onClick={() =>
-              this.updateDB(this.state.idToUpdate, this.state.updateToApply)
-            }
-          >
+            onClick={() => this.updateDB(this.state.idToUpdate, this.state.updateToApply)}>
             UPDATE
           </button>
         </div>
