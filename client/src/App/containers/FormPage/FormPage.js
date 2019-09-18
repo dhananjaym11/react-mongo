@@ -39,8 +39,8 @@ class FormPage extends Component {
         });
     }
 
-    putFormData = (dataX) => {
-        const data = { id: dataX.id, update: { name: dataX.name, age: dataX.age } }
+    putFormData = (id, formData) => {
+        const data = { id: id, update: formData };
         axios({
             method: 'post',
             url: dev_environment.base_url + 'updateData',

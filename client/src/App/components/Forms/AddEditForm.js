@@ -15,8 +15,7 @@ export default function AddEditForm(props) {
             name, age
         }
         if (props.data.id) {
-            data.id = props.data.id;
-            props.putFormData(data);
+            props.putFormData(props.data.id, data);
         } else {
             props.postFormData(data);
         }
